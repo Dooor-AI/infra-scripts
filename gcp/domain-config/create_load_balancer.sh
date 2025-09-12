@@ -72,7 +72,7 @@ echo "   ✅ Backend Service configurado"
 
 # 4. Criar certificado SSL gerenciado
 echo ""
-echo "5️⃣ Criando certificado SSL gerenciado..."
+echo "4️⃣ Criando certificado SSL gerenciado..."
 gcloud compute ssl-certificates create "$LB_NAME-ssl-cert" \
     --domains="$DOMAIN" \
     --global \
@@ -80,9 +80,9 @@ gcloud compute ssl-certificates create "$LB_NAME-ssl-cert" \
 
 echo "   ✅ Certificado SSL criado para $DOMAIN"
 
-# 6. Criar URL Map
+# 5. Criar URL Map
 echo ""
-echo "6️⃣ Criando URL Map..."
+echo "5️⃣ Criando URL Map..."
 gcloud compute url-maps create "$LB_NAME-url-map" \
     --default-service="$LB_NAME-backend" \
     --global \
@@ -90,9 +90,9 @@ gcloud compute url-maps create "$LB_NAME-url-map" \
 
 echo "   ✅ URL Map criado"
 
-# 7. Criar HTTPS Target Proxy
+# 6. Criar HTTPS Target Proxy
 echo ""
-echo "7️⃣ Criando HTTPS Target Proxy..."
+echo "6️⃣ Criando HTTPS Target Proxy..."
 gcloud compute target-https-proxies create "$LB_NAME-https-proxy" \
     --ssl-certificates="$LB_NAME-ssl-cert" \
     --url-map="$LB_NAME-url-map" \
@@ -101,9 +101,9 @@ gcloud compute target-https-proxies create "$LB_NAME-https-proxy" \
 
 echo "   ✅ HTTPS Target Proxy criado"
 
-# 8. Criar HTTP Target Proxy (para redirect)
+# 7. Criar HTTP Target Proxy (para redirect)
 echo ""
-echo "8️⃣ Criando HTTP Target Proxy (redirect para HTTPS)..."
+echo "7️⃣ Criando HTTP Target Proxy (redirect para HTTPS)..."
 gcloud compute url-maps create "$LB_NAME-redirect-map" \
     --global \
     --project="$PROJECT_ID" || echo "Redirect Map já existe"
@@ -120,9 +120,9 @@ gcloud compute target-http-proxies create "$LB_NAME-http-proxy" \
 
 echo "   ✅ HTTP Target Proxy criado"
 
-# 9. Criar Forwarding Rules
+# 8. Criar Forwarding Rules
 echo ""
-echo "9️⃣ Criando Forwarding Rules..."
+echo "8️⃣ Criando Forwarding Rules..."
 
 # HTTPS Forwarding Rule
 gcloud compute forwarding-rules create "$LB_NAME-https-forwarding-rule" \
@@ -142,9 +142,9 @@ gcloud compute forwarding-rules create "$LB_NAME-http-forwarding-rule" \
 
 echo "   ✅ Forwarding Rules criados"
 
-# 10. Verificar Cloud Run está público
+# 9. Verificar Cloud Run está público
 echo ""
-echo "🔟 Verificando se Cloud Run está público..."
+echo "9️⃣ Verificando se Cloud Run está público..."
 gcloud run services add-iam-policy-binding "$SERVICE_NAME" \
     --member="allUsers" \
     --role="roles/run.invoker" \

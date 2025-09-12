@@ -37,10 +37,9 @@ chmod +x create_load_balancer.sh check_lb_status.sh
 ### **1. Recursos de Rede:**
 - ✅ **IP Estático Global** (você configura no DNS)
 - ✅ **Network Endpoint Group** (conecta ao Cloud Run)
-- ✅ **Health Check** (monitora saúde do serviço)
 
 ### **2. Load Balancer:**
-- ✅ **Backend Service** (roteamento para Cloud Run)
+- ✅ **Backend Service** (EXTERNAL_MANAGED para Cloud Run serverless)
 - ✅ **URL Map** (regras de roteamento)
 - ✅ **Target Proxies** (HTTP + HTTPS)
 - ✅ **Forwarding Rules** (portas 80 + 443)
