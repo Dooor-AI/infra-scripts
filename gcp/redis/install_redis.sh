@@ -13,11 +13,23 @@ REDIS_PASSWORD=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-32)
 # Atualizar sistema
 apt-get update
 
-# Instalar Redis
-apt-get install -y redis-server
+# Adicionar repositório oficial do Redis para versão específica
+curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb focal main" | sudo tee /etc/apt/sources.list.d/redis.list
+
+# Atualizar cache de pacotes
+apt-get update
+
+# Instalar Redis versão específica e estável (6.2.14)
+apt-get install -y redis=6:6.2.14-1rl1~focal1
 
 # Configurar Redis para aceitar conexões externas
+# Redis 8.0+ usa formato diferente
 sed -i 's/bind 127.0.0.1 ::1/bind 0.0.0.0/' /etc/redis/redis.conf
+sed -i 's/bind 127.0.0.1 -::1/bind 0.0.0.0/' /etc/redis/redis.conf
+
+# Desabilitar protected mode para conexões externas com senha
+sed -i 's/protected-mode yes/protected-mode no/' /etc/redis/redis.conf
 
 # Configurar senha
 echo "requirepass $REDIS_PASSWORD" >> /etc/redis/redis.conf

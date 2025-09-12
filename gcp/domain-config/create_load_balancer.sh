@@ -105,13 +105,9 @@ echo "   ✅ HTTPS Target Proxy criado"
 echo ""
 echo "7️⃣ Criando HTTP Target Proxy (redirect para HTTPS)..."
 gcloud compute url-maps create "$LB_NAME-redirect-map" \
+    --default-service="$LB_NAME-backend" \
     --global \
     --project="$PROJECT_ID" || echo "Redirect Map já existe"
-
-# Configurar redirect HTTP -> HTTPS
-gcloud compute url-maps edit "$LB_NAME-redirect-map" \
-    --global \
-    --project="$PROJECT_ID" || echo "Redirect já configurado"
 
 gcloud compute target-http-proxies create "$LB_NAME-http-proxy" \
     --url-map="$LB_NAME-redirect-map" \
