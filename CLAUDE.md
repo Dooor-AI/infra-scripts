@@ -24,6 +24,8 @@ Para debugs e ler servicos, utilize sempre o gcloud cli
 
 Todos os scripts GCP devem usar este projeto como padrão, mas permitir override via parâmetro.
 
+
+Quando eu pedir pra add uma permissao aos developers, estou falando para adicionar a permissao na Role Developer que temos no gcp.
 ## Como usar
 
 1. Clonar o repositório

@@ -34,6 +34,10 @@ sed -i 's/protected-mode yes/protected-mode no/' /etc/redis/redis.conf
 # Configurar senha
 echo "requirepass $REDIS_PASSWORD" >> /etc/redis/redis.conf
 
+# Configurar limites de memória e política de eviction
+echo "maxmemory 3gb" >> /etc/redis/redis.conf
+echo "maxmemory-policy allkeys-lru" >> /etc/redis/redis.conf
+
 # Salvar senha e informações de conexão
 echo "REDIS_PASSWORD=$REDIS_PASSWORD" > /var/log/redis-credentials.log
 echo "REDIS_PORT=6379" >> /var/log/redis-credentials.log

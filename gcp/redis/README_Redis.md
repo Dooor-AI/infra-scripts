@@ -105,10 +105,23 @@ gcloud compute ssh redis-vm --zone=us-central1-a --command="sudo journalctl -u r
 
 **Já configurado automaticamente:**
 - ✅ Senha forte aleatória
-- ✅ Acesso externo configurado 
+- ✅ Acesso externo configurado
 - ✅ Firewall para porta 6379
 
 **Para produção adicional:**
 - Usar VPC privada
 - Configurar SSL/TLS
 - Restringir firewall para IPs específicos
+
+## 🧠 Gerenciamento de Memória
+
+**Configurado automaticamente:**
+- ✅ **maxmemory: 3GB** - Limita uso máximo de RAM
+- ✅ **maxmemory-policy: allkeys-lru** - Remove dados menos usados automaticamente
+- ✅ Previne crescimento infinito de dados
+- ✅ Evita disco cheio por snapshots RDB
+
+**Como funciona:**
+- Redis remove automaticamente chaves menos usadas quando atinge 3GB
+- Garante que o serviço nunca para por falta de espaço
+- Ideal para caches e filas de jobs (RQ, BullMQ, etc)
