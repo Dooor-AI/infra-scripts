@@ -21,7 +21,8 @@ echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://pack
 apt-get update
 
 # Instalar Redis versão específica e estável (6.2.14)
-apt-get install -y redis=6:6.2.14-1rl1~focal1
+# Instalar redis-tools primeiro para evitar conflito de dependências
+apt-get install -y redis-tools=6:6.2.14-1rl1~focal1 redis-server=6:6.2.14-1rl1~focal1
 
 # Configurar Redis para aceitar conexões externas
 # Redis 8.0+ usa formato diferente
@@ -35,8 +36,25 @@ sed -i 's/protected-mode yes/protected-mode no/' /etc/redis/redis.conf
 echo "requirepass $REDIS_PASSWORD" >> /etc/redis/redis.conf
 
 # Configurar limites de memória e política de eviction
-echo "maxmemory 3gb" >> /etc/redis/redis.conf
+echo "maxmemory 2gb" >> /etc/redis/redis.conf
 echo "maxmemory-policy allkeys-lru" >> /etc/redis/redis.conf
+
+# Configurações para evitar problemas de disco
+echo "stop-writes-on-bgsave-error no" >> /etc/redis/redis.conf
+echo "rdbcompression yes" >> /etc/redis/redis.conf
+echo "rdbchecksum yes" >> /etc/redis/redis.conf
+
+# Habilitar AOF como backup adicional (mais seguro)
+echo "appendonly yes" >> /etc/redis/redis.conf
+echo "appendfilename \"appendonly.aof\"" >> /etc/redis/redis.conf
+echo "appendfsync everysec" >> /etc/redis/redis.conf
+echo "no-appendfsync-on-rewrite no" >> /etc/redis/redis.conf
+echo "auto-aof-rewrite-percentage 100" >> /etc/redis/redis.conf
+echo "auto-aof-rewrite-min-size 64mb" >> /etc/redis/redis.conf
+
+# Otimizações de I/O
+echo "rdb-save-incremental-fsync yes" >> /etc/redis/redis.conf
+echo "aof-rewrite-incremental-fsync yes" >> /etc/redis/redis.conf
 
 # Salvar senha e informações de conexão
 echo "REDIS_PASSWORD=$REDIS_PASSWORD" > /var/log/redis-credentials.log

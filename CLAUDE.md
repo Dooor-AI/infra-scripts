@@ -32,6 +32,7 @@ Quando eu pedir pra add uma permissao aos developers, estou falando para adicion
 2. Dar permissões de execução: `chmod +x *.sh`
 3. Executar scripts conforme documentação específica
 
+
 ## Convenções
 
 - Scripts devem ter parâmetros sensatos como padrão
